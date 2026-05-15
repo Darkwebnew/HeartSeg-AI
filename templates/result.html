@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — Diagnostic Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+</head>
+<body class="severity-{{ severity }}">
+
+  <!-- Nav -->
+  <nav class="topnav">
+    <div class="nav-brand">
+      <div class="heart-icon-sm">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 28S4 20 4 12a6 6 0 0112-1.17A6 6 0 0128 12c0 8-12 16-12 16z"
+                stroke="#ff4d6d" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="nav-title">HeartSeg<strong>AI</strong></span>
+      <span class="nav-ver">v2</span>
+    </div>
+    <div class="nav-right">
+      <a href="{{ url_for('upload') }}" class="btn-new">+ New Analysis</a>
+      <a href="{{ url_for('logout') }}" class="btn-logout">Sign Out</a>
+    </div>
+  </nav>
+
+  <main class="result-main">
+
+    <!-- Report header -->
+    <div class="report-header">
+      <div class="report-title-group">
+        <p class="report-label">Diagnostic Report</p>
+        <h1>Cardiac MRI Analysis</h1>
+      </div>
+      <div class="report-meta">
+        <span class="meta-badge severity-badge-{{ severity }}">
+          {% if severity == 'none' %}✓ No Pathology
+          {% elif severity == 'medium' %}⚠ Moderate Risk
+          {% elif severity == 'high' %}⚡ High Risk
+          {% elif severity == 'critical' %}🚨 Critical
+          {% else %}— Unknown
+          {% endif %}
+        </span>
+      </div>
+    </div>
+
+    <!-- Main grid -->
+    <div class="result-grid">
+
+      <!-- Column 1: Images -->
+      <section class="img-section">
+
+        <div class="img-card">
+          <div class="img-card-header">
+            <h3>Original MRI</h3>
+          </div>
+          <div class="img-wrap">
+            <img src="{{ image_url }}" alt="Input MRI scan" loading="lazy">
+          </div>
+        </div>
+
+        {% if overlay_url %}
+        <div class="img-card">
+          <div class="img-card-header">
+            <h3>Segmentation Overlay</h3>
+            <div class="seg-legend">
+              <span class="leg lv"></span>LV
+              <span class="leg rv"></span>RV
+              <span class="leg myo"></span>Myo
+            </div>
+          </div>
+          <div class="img-wrap">
+            <img src="{{ overlay_url }}" alt="Segmentation overlay" loading="lazy">
+          </div>
+        </div>
+        {% endif %}
+
+        {% if gradcam_url %}
+        <div class="img-card">
+          <div class="img-card-header">
+            <h3>Grad-CAM Saliency</h3>
+            <span class="img-badge">Explainability</span>
+          </div>
+          <div class="img-wrap">
+            <img src="{{ gradcam_url }}" alt="Grad-CAM attention map" loading="lazy">
+          </div>
+        </div>
+        {% endif %}
+
+      </section>
+
+      <!-- Column 2: Results -->
+      <section class="data-section">
+
+        <!-- Classification result -->
+        <div class="result-card primary-result">
+          <div class="card-header">
+            <h3>Classification Result</h3>
+          </div>
+          <div class="primary-diag">
+            <p class="diag-label">Predicted Condition</p>
+            <h2 class="diag-name">{{ predicted_class }}</h2>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-bar">
+                <div class="confidence-fill" style="width: {{ confidence }}%"></div>
+              </div>
+              <span class="confidence-pct">{{ confidence }}% confidence</span>
+            </div>
+          </div>
+
+          {% if all_probs %}
+          <div class="prob-breakdown">
+            <p class="breakdown-title">All class probabilities</p>
+            {% for label, prob in all_probs %}
+            <div class="prob-row">
+              <span class="prob-label {% if label == predicted_class %}active{% endif %}">
+                {{ label }}{% if label == predicted_class %} ✓{% endif %}
+              </span>
+              <div class="prob-bar-wrap">
+                <div class="prob-bar" style="width: {{ prob }}%"></div>
+              </div>
+              <span class="prob-pct">{{ prob }}%</span>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Segmentation areas -->
+        {% if structure_areas %}
+        <div class="result-card">
+          <div class="card-header">
+            <h3>Structure Areas</h3>
+            <span class="card-sub">% of total image</span>
+          </div>
+          <div class="area-grid">
+            {% for name, pct in structure_areas.items() %}
+            <div class="area-item {% if 'Left' in name %}lv{% elif 'Right' in name %}rv{% else %}myo{% endif %}">
+              <span class="area-pct">{{ pct }}%</span>
+              <span class="area-name">{{ name }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Clinical info -->
+        {% if disease_info %}
+        <div class="result-card clinical-card">
+          <div class="card-header">
+            <h3>Clinical Information</h3>
+          </div>
+
+          <p class="clinical-desc">{{ disease_info.get('description', '') }}</p>
+
+          {% if disease_info.get('recommendation') %}
+          <div class="clinical-block">
+            <p class="block-title">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+              Recommendation
+            </p>
+            <p>{{ disease_info['recommendation'] }}</p>
+          </div>
+          {% endif %}
+
+          {% if disease_info.get('medications') %}
+          <div class="clinical-block">
+            <p class="block-title">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a8 8 0 100 16A8 8 0 0010 2zm1 11a1 1 0 11-2 0 1 1 0 012 0zm-1-3a1 1 0 01-1-1V7a1 1 0 012 0v2a1 1 0 01-1 1z" clip-rule="evenodd"/></svg>
+              Medication Considerations
+            </p>
+            <div class="med-tags">
+              {% for med in disease_info['medications'] %}
+              <span class="med-tag">{{ med }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          {% if disease_info.get('follow_up') %}
+          <div class="clinical-block">
+            <p class="block-title">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+              Suggested Follow-up
+            </p>
+            <p class="follow-up-text">{{ disease_info['follow_up'] }}</p>
+          </div>
+          {% endif %}
+
+        </div>
+        {% endif %}
+
+        <!-- Disclaimer -->
+        <div class="disclaimer-card">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <p><strong>Medical Disclaimer:</strong> This AI system is a screening aid only. Medication information is for general reference. All clinical decisions must be made by a qualified, licensed cardiologist based on complete patient evaluation.</p>
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/result.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+
+  <!-- Animated background grid -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ECG Line -->
+  <div class="ecg-bar">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+      <polyline class="ecg-line" points="
+        0,30 100,30 120,30 130,5 140,55 150,10 160,50 170,30 280,30
+        300,30 320,30 330,5 340,55 350,10 360,50 370,30 480,30
+        500,30 520,30 530,5 540,55 550,10 560,50 570,30 680,30
+        700,30 720,30 730,5 740,55 750,10 760,50 770,30 880,30
+        900,30 920,30 930,5 940,55 950,10 960,50 970,30 1080,30
+        1100,30 1120,30 1130,5 1140,55 1150,10 1160,50 1170,30 1200,30
+      "/>
+    </svg>
+  </div>
+
+  <div class="page-wrap">
+
+    <!-- Left panel -->
+    <aside class="left-panel">
+      <div class="brand">
+        <div class="heart-icon">
+          <svg viewBox="0 0 48 48" fill="none">
+            <path d="M24 42S6 30 6 18a9 9 0 0118-1.76A9 9 0 0142 18c0 12-18 24-18 24z"
+                  stroke="#ff4d6d" stroke-width="2.5" stroke-linejoin="round"/>
+            <path class="pulse-path" d="M10 24h5l3-7 4 14 3-10 3 6 3-3h6"
+                  stroke="#ff4d6d" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h1 class="logo-text">HeartSeg<span>AI</span></h1>
+        <p class="logo-sub">v2 · Cardiac MRI Intelligence</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-val">94.8<small>%</small></span>
+          <span class="stat-label">Dice Score</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">U-Net</span>
+          <span class="stat-label">Architecture</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">3</span>
+          <span class="stat-label">Structures</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">6</span>
+          <span class="stat-label">Disease Classes</span>
+        </div>
+      </div>
+
+      <div class="structures-legend">
+        <div class="legend-item"><span class="dot lv"></span>Left Ventricle</div>
+        <div class="legend-item"><span class="dot rv"></span>Right Ventricle</div>
+        <div class="legend-item"><span class="dot myo"></span>Myocardium</div>
+      </div>
+
+      <p class="disclaimer">⚕ AI-assisted screening tool. All results require review by a qualified cardiologist before clinical decisions.</p>
+    </aside>
+
+    <!-- Right panel — Login form -->
+    <main class="right-panel">
+      <div class="login-card">
+        <h2>Clinical Access</h2>
+        <p class="login-sub">Sign in to access the diagnostic platform</p>
+
+        {% if error %}
+          <div class="alert-error">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            {{ error }}
+          </div>
+        {% endif %}
+
+        <form method="POST" action="/" autocomplete="off">
+          <div class="field-group">
+            <label for="username">Username</label>
+            <div class="input-wrap">
+              <svg class="field-icon" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
+              <input type="text" id="username" name="username"
+                     placeholder="Enter username" required autocomplete="off">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <svg class="field-icon" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+              </svg>
+              <input type="password" id="password" name="password"
+                     placeholder="Enter password" required>
+              <button type="button" class="toggle-pw" onclick="togglePw()">
+                <svg id="eye-icon" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-login">
+            <span>Access Platform</span>
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+              <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </form>
+
+        <p class="creds-hint">Demo credentials: <code>heart123 / heart123</code></p>
+      </div>
+
+      <p class="institution">Saveetha Engineering College · Chennai, Tamil Nadu, India</p>
+    </main>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
