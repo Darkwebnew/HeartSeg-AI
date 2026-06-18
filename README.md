@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=HeartSeg%20AI%20v2&fontSize=72&fontColor=fff&animation=twinkling&fontAlignY=35&desc=Cardiac%20MRI%20Segmentation%20%26%20Disease%20Classification%20%E2%80%94%20U-Net%20%2B%20CNN%20%2B%20Grad-CAM&descAlignY=55&descSize=15" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:0f172a,100:06b6d4&text=HeartSeg%20AI%20v2&fontSize=60&fontColor=ffffff&animation=fadeIn" width="100%"/>
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&pause=1000&color=00D4FF&center=true&vCenter=true&multiline=true&width=1600&height=60&lines=U-Net+Segmentation+%7C+CNN+Classification+%7C+Grad-CAM+Explainability+%7C+98.26%25+Classification+Accuracy)](https://git.io/typing-svg)
 
@@ -572,24 +572,38 @@ This project is open-source under the MIT License. Contributions are warmly welc
 
 <div align="center">
 
-**If HeartSeg AI v2 helped your research or clinical project — consider supporting continued development!**
+**If HeartSeg AI v2 helped your research, medical imaging studies, academic work, AI learning journey, or healthcare innovation projects — consider supporting continued development!**
 
 <br/>
 
-<a href="https://www.buymeacoffee.com/sriramnvks" target="_blank">
-<img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-%23FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" height="50"/>
+<a href="https://buymeachai.ezee.li/Harish_Ammu">
+<img src="https://img.shields.io/badge/🇮🇳_Buy_Me_A_Chai-FF6B35?style=for-the-badge" height="50"/>
+</a>
+
+<a href="https://buymeacoffee.com/sriramnvks">
+<img src="https://img.shields.io/badge/☕_Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" height="50"/>
 </a>
 
 <br/><br/>
 
-*Your support helps build better open-source AI healthcare tools for the community.*
+<a href="https://github.com/sponsors/darkwebnew">
+<img src="https://img.shields.io/badge/GitHub_Sponsors-EA4AAA?style=for-the-badge&logo=github-sponsors&logoColor=white" height="50"/>
+</a>
+
+<a href="https://paypal.me/sriramnvks">
+<img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" height="50"/>
+</a>
+
+<br/><br/>
+
+*Your support helps fund open-source medical AI research, cardiac MRI analysis tools, explainable AI systems, deep learning experimentation, healthcare innovation projects, and educational resources for students, researchers, and developers worldwide.*
 
 <br/>
 
-[![GitHub Sponsors](https://img.shields.io/badge/Sponsor%20on%20GitHub-%23EA4AAA?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/darkwebnew)
-[![PayPal](https://img.shields.io/badge/Donate%20via%20PayPal-%2300457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/sriramnvks)
+🫀 **Every contribution helps advance accessible AI-powered healthcare technology.**
 
 </div>
+
 
 ---
 
@@ -651,7 +665,7 @@ See the full [`LICENSE.txt`](LICENSE.txt) for complete terms.
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=footer&animation=twinkling" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=180&section=footer&color=0:0f172a,50:0ea5e9,100:06b6d4&text=Thank%20You%20For%20Visiting&fontSize=30&fontColor=ffffff&animation=fadeIn&fontAlignY=70" width="100%"/>
 
 **⭐ Star this repository if HeartSeg AI v2 helped your project!**
 
