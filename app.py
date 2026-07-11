@@ -1,23 +1,12 @@
 """
 app.py
-HeartSeg AI v2 — Flask Web Application
+HeartSeg AI v2 — Flask Web Application (Render-Ready)
 
-Routes:
-    GET  /           → Landing page
-    GET  /login      → Login page
-    POST /login      → Authenticate user
-    GET  /dashboard  → Main dashboard (protected)
-    GET  /upload     → MRI upload form (protected)
-    POST /predict    → Validate upload, redirect to processing (protected)
-    GET  /processing → AI processing animation (protected)
-    POST /run-analysis → Run models, return result (protected)
-    GET  /result     → View last prediction result (protected)
-    GET  /history    → Scan history (protected)
-    GET  /research   → Research & model info (protected)
-    GET  /about      → About page (protected)
-    GET  /settings   → Settings page (protected)
-    GET  /logout     → End session
-    GET  /uploads/<filename> → Serve uploaded/generated images
+Production changes:
+  - PORT from environment variable
+  - SECRET_KEY from environment variable (persists sessions across deploys)
+  - Models load at module level so Gunicorn picks them up
+  - Graceful failure if models are missing
 
 Author: Sriram V & HeartSeg AI Team
 Institution: Saveetha Engineering College, Chennai
@@ -26,6 +15,7 @@ Institution: Saveetha Engineering College, Chennai
 import os
 import secrets
 import uuid
+import logging
 from flask import (
     Flask, request, render_template,
     redirect, url_for, session, send_from_directory, abort, jsonify
@@ -40,12 +30,22 @@ from mri_segmentation import (
     DISEASE_INFO,
 )
 
-# ─── App Configuration ────────────────────────────────────────────────────────
+# ─── Logging ─────────────────────────────────────────────────────────────────
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
+
+# ─── App Configuration ───────────────────────────────────────────────────────
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
 
-UPLOAD_FOLDER   = "uploads"
+# CRITICAL: Set SECRET_KEY in Render dashboard so logins survive deploys.
+# Fallback only for local development.
+app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
+if not os.environ.get("SECRET_KEY"):
+    log.warning("SECRET_KEY not set in environment. Using random fallback. "
+                "Users will be logged out on every deploy!")
+
+UPLOAD_FOLDER   = os.environ.get("UPLOAD_FOLDER", "uploads")
 ALLOWED_EXT     = {"png", "jpg", "jpeg"}
 MAX_CONTENT_MB  = 10
 
@@ -67,19 +67,31 @@ cls_model = None
 def load_models():
     global seg_model, cls_model
     if os.path.exists(SEG_MODEL_PATH):
-        seg_model = load_model(SEG_MODEL_PATH, compile=False)
-        print(f"  [OK] Segmentation model loaded: {SEG_MODEL_PATH}")
+        try:
+            seg_model = load_model(SEG_MODEL_PATH, compile=False)
+            log.info(f"[OK] Segmentation model loaded: {SEG_MODEL_PATH}")
+        except Exception as e:
+            log.error(f"[ERROR] Failed to load segmentation model: {e}")
     else:
-        print(f"  [WARN] Segmentation model not found at {SEG_MODEL_PATH}.")
+        log.warning(f"[WARN] Segmentation model not found at {SEG_MODEL_PATH}.")
 
     if os.path.exists(CLS_MODEL_PATH):
-        cls_model = load_model(CLS_MODEL_PATH, compile=False)
-        print(f"  [OK] Classification model loaded: {CLS_MODEL_PATH}")
+        try:
+            cls_model = load_model(CLS_MODEL_PATH, compile=False)
+            log.info(f"[OK] Classification model loaded: {CLS_MODEL_PATH}")
+        except Exception as e:
+            log.error(f"[ERROR] Failed to load classification model: {e}")
     else:
-        print(f"  [WARN] Classification model not found at {CLS_MODEL_PATH}.")
+        log.warning(f"[WARN] Classification model not found at {CLS_MODEL_PATH}.")
 
+# Load models at import time so Gunicorn/Render workers have them ready.
+# On free tier (512 MB RAM) this should fit if models are < 100 MB total.
+try:
+    load_models()
+except Exception as e:
+    log.critical(f"Model loading failed: {e}")
 
-# ─── Helpers ──────────────────────────────────────────────────────────────────
+# ─── Helpers ─────────────────────────────────────────────────────────────────
 
 def allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXT
@@ -113,7 +125,7 @@ DEMO_HISTORY = [
 ]
 
 
-# ─── Routes ───────────────────────────────────────────────────────────────────
+# ─── Routes ─────────────────────────────────────────────────────────────────
 
 @app.route("/")
 def landing():
@@ -251,7 +263,7 @@ def run_analysis():
         try:
             seg_result = run_segmentation(seg_model, file_path)
         except Exception as e:
-            print(f"  [ERROR] Segmentation failed: {e}")
+            log.error(f"Segmentation failed: {e}")
 
     cls_result = {
         "predicted_class": "Unknown",
@@ -263,7 +275,7 @@ def run_analysis():
         try:
             cls_result = run_classification(cls_model, file_path)
         except Exception as e:
-            print(f"  [ERROR] Classification failed: {e}")
+            log.error(f"Classification failed: {e}")
 
     gradcam_filename = None
     if cls_model is not None:
@@ -271,7 +283,7 @@ def run_analysis():
             gc_path = generate_gradcam(cls_model, file_path)
             gradcam_filename = os.path.basename(gc_path)
         except Exception as e:
-            print(f"  [WARN] Grad-CAM skipped: {e}")
+            log.warning(f"Grad-CAM skipped: {e}")
 
     overlay_filename = None
     if seg_result.get("overlay_path") and os.path.exists(seg_result["overlay_path"]):
@@ -588,13 +600,9 @@ def not_found(e):
     return redirect(url_for("upload"))
 
 
-# ─── Entry Point ──────────────────────────────────────────────────────────────
+# ─── Entry Point ─────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    print("\n" + "="*55)
-    print("  HeartSeg AI v2  ·  Starting...")
-    print("="*55)
-    load_models()
-    print("  Navigate to: http://localhost:5000")
-    print("="*55 + "\n")
-    app.run(debug=False, host="0.0.0.0", port=5000)
+    # Local development only. On Render, Gunicorn imports this module directly.
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
