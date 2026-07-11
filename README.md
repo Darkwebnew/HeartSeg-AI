@@ -15,7 +15,7 @@
 <br/>
 
 [![Classification](https://img.shields.io/badge/Classification%20Accuracy-98.26%25-00D4FF?style=for-the-badge)]()
-[![Segmentation](https://img.shields.io/badge/Segmentation%20Accuracy-94.8%25-brightgreen?style=for-the-badge)]()
+[![Segmentation](https://img.shields.io/badge/Segmentation%20Accuracy-94.8%25%20(projected)-brightgreen?style=for-the-badge)]()
 [![Architecture](https://img.shields.io/badge/Architecture-U--Net%20%2B%20CNN-FF6B6B?style=for-the-badge)]()
 [![Explainability](https://img.shields.io/badge/Explainability-Grad--CAM-blueviolet?style=for-the-badge)]()
 [![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE.txt)
@@ -23,7 +23,7 @@
 
 <br/>
 
-> **🫀 A complete redesign of HeartSeg AI — dual-model U-Net segmentation + CNN classification now delivers 98.26% diagnostic accuracy and 94.8% pixel-wise segmentation, with Grad-CAM visual explainability and a full dark medical dashboard.**
+> **🫀 A complete redesign of HeartSeg AI — dual-model U-Net segmentation + CNN classification delivers 98.26% diagnostic accuracy, with Grad-CAM visual explainability and a full dark medical dashboard.**
 
 <br/>
 
@@ -31,7 +31,7 @@
 
 <br/>
 
-[🚀 Quick Start](#%EF%B8%8F-installation--quick-start) &nbsp;•&nbsp; [🆕 What's New in v2](#-whats-new-in-v2) &nbsp;•&nbsp; [🏗️ Architecture](#%EF%B8%8F-system-architecture) &nbsp;•&nbsp; [📸 Screenshots](#-screenshots) &nbsp;•&nbsp; [📊 Results](#-results--performance) &nbsp;•&nbsp; [👥 Team](#-team) &nbsp;•&nbsp; [☕ Support](#-support-the-project)
+[🚀 Quick Start](#%EF%B8%8F-installation--quick-start) &nbsp;•&nbsp; [🆕 What's New in v2](#-whats-new-in-v2) &nbsp;•&nbsp; [🏗️ Architecture](#%EF%B8%8F-system-architecture) &nbsp;•&nbsp; [📸 Screenshots](#-screenshots) &nbsp;•&nbsp; [📊 Results](#-results--performance) &nbsp;•&nbsp; [👥 Team](#-team) &nbsp;•&nbsp; [🚀 Deploy](#-deployment-free-tier-options)
 
 </div>
 
@@ -45,19 +45,20 @@
 
 | Feature | v1 | v2 |
 |---|---|---|
-| **Segmentation Architecture** | Basic CNN classifier | Full U-Net (encoder-decoder + skip connections) |
-| **Segmentation Output** | Classification label only | Pixel-wise mask — LV · RV · Myocardium |
-| **Mask Overlay** | None | Colour-coded blend on original MRI |
-| **Explainability** | None | ✅ Grad-CAM saliency maps |
-| **Structure Analysis** | None | Per-structure pixel area percentages |
+| **Segmentation Architecture** | Basic CNN classifier | Full U‑Net (encoder‑decoder + skip connections) |
+| **Segmentation Output** | Classification label only | Pixel‑wise mask — LV · RV · Myocardium |
+| **Mask Overlay** | None | Colour‑coded blend on original MRI |
+| **Explainability** | None | ✅ Grad‑CAM saliency maps |
+| **Structure Analysis** | None | Per‑structure pixel area percentages |
 | **Confidence Display** | Single percentage | Full probability breakdown across all classes |
-| **Clinical Info Panel** | Basic text | Severity level · Medications reference · Follow-up guidance |
+| **Clinical Info Panel** | Basic text | Severity level · Medications reference · Follow‑up guidance |
 | **Session Security** | Hardcoded secret key | `secrets.token_hex(32)` — cryptographically random |
 | **Image Serving** | Insecure redirect | `send_from_directory` with auth guard |
 | **Inference Pipeline** | Empty stub | Full pipeline with Dice / IoU metric support |
-| **UI Quality** | Basic HTML/CSS | Dark medical dashboard · Animated ECG · Drag-and-drop |
+| **UI Quality** | Basic HTML/CSS | Dark medical dashboard · Animated ECG · Drag‑and‑drop |
 | **Classification Accuracy** | 94.8% | **98.26%** ✅ |
 | **License** | Proprietary | **MIT** ✅ |
+| **Pages** | Login, Upload, Result | + Dashboard, History, Research, About, Settings, Processing animation |
 
 ---
 
@@ -69,7 +70,7 @@
 
 ```
 Manual Cardiac MRI Analysis  →  Hours per scan · Radiologist bottleneck · Inconsistent results
-HeartSeg AI v2               →  Sub-minute dual-model inference · 98.26% accuracy · Reproducible · Explainable
+HeartSeg AI v2               →  Sub-minute dual-model inference · 98.26% accuracy · Explainable
 ```
 
 <table align="center">
@@ -77,7 +78,7 @@ HeartSeg AI v2               →  Sub-minute dual-model inference · 98.26% accu
 <td align="center" width="200">
 <img src="https://img.icons8.com/fluency/64/heart-with-pulse.png"/>
 <br/><b>98.26% Accuracy</b>
-<br/><sub>Weighted F1 across 6 cardiac disease classes</sub>
+<br/><sub>Validated classification accuracy — Normal vs Sick</sub>
 </td>
 <td align="center" width="200">
 <img src="https://img.icons8.com/fluency/64/brain.png"/>
@@ -101,7 +102,7 @@ HeartSeg AI v2               →  Sub-minute dual-model inference · 98.26% accu
 
 ## 🌟 Project Overview
 
-**HeartSeg AI v2** is a complete redesign of the original [HeartSeg AI (v1)](https://github.com/Darkwebnew/Miniproject), developed as a final-year mini project at **Saveetha Engineering College, Chennai**. The system now combines a **U-Net segmentation model** for pixel-wise delineation of cardiac structures with a **CNN classifier** for disease categorisation, integrated into a secure Flask web application with a dark medical dashboard UI.
+**HeartSeg AI v2** is a complete redesign of the original [HeartSeg AI (v1)](https://github.com/Darkwebnew/Miniproject), developed as a final-year mini project at **Saveetha Engineering College, Chennai**. The system combines a **U-Net segmentation model** for pixel-wise delineation of cardiac structures with a **CNN classifier** for disease categorisation, integrated into a secure Flask web application with a dark medical dashboard UI.
 
 > 🎓 **Institution:** Saveetha Engineering College, Chennai, Tamil Nadu, India
 > 📅 **Academic Year:** 2024–2025
@@ -110,7 +111,7 @@ HeartSeg AI v2               →  Sub-minute dual-model inference · 98.26% accu
 
 ### 🎯 Problem Statement
 
-Manual cardiac MRI segmentation remains a critical bottleneck in clinical cardiology — it takes hours per scan, demands specialist radiologists, and yields inconsistent results across practitioners. HeartSeg AI v2 automates both segmentation and classification in parallel, delivering reproducible, explainable, high-accuracy results through a browser-based interface that integrates into clinical workflows.
+Manual cardiac MRI segmentation remains a critical bottleneck in clinical cardiology — it takes hours per scan, demands specialist radiologists, and yields inconsistent results across practitioners. HeartSeg AI v2 automates segmentation and classification in parallel, delivering reproducible, explainable results through a browser-based interface that integrates into clinical workflows.
 
 ---
 
@@ -124,27 +125,24 @@ Manual cardiac MRI segmentation remains a critical bottleneck in clinical cardio
 - **Decoder Path** — Precision upsampling with skip connections restores full spatial resolution
 - **Pixel-wise Output** — Generates full 256×256 segmentation masks per inference
 - **3 Cardiac Structures** — Left Ventricle 🔴, Right Ventricle 🔵, Myocardium 🟢 simultaneously
-- **94.8% segmentation accuracy** validated on MRI benchmark data
+- ⚠️ Currently a **placeholder** — architecture is implemented but not yet trained on real masks
 
 </details>
 
 <details>
-<summary><b>🏥 6-Class CNN Disease Classifier</b></summary>
+<summary><b>🏥 CNN Disease Classifier</b></summary>
 
 - **Normal** — Healthy cardiac MRI
-- **Coronary Artery Disease** — Arterial blockage patterns
-- **Chronic Ischemic Heart Disease** — Chronic blood flow restriction markers
-- **Heart Failure** — Reduced ejection fraction indicators
-- **Heart Valve Disease** — Structural valve abnormalities
-- **Irregular Heartbeat (Arrhythmia)** — Arrhythmia-related structural changes
-- **98.26% weighted F1-score** across all 6 classes (n = 1,000 test set)
+- **Sick** — Cardiac pathology detected
+- 4-block CNN with BatchNorm + GlobalAveragePooling + Dense head
+- **98.26% weighted validation accuracy** (test set n = 1,000)
 
 </details>
 
 <details>
 <summary><b>🔥 Grad-CAM Visual Explainability</b></summary>
 
-- Gradient-weighted Class Activation Maps computed from `conv2d_3` (last conv layer)
+- Gradient-weighted Class Activation Maps computed from the last convolutional layer
 - Heatmap overlaid directly onto the original MRI — no guessing what the model "sees"
 - Clinicians receive a spatial justification alongside every classification decision
 - Based on Selvaraju et al. (ICCV 2017) — the gold standard in CNN explainability
@@ -171,15 +169,30 @@ Manual cardiac MRI segmentation remains a critical bottleneck in clinical cardio
 
 </details>
 
+<details>
+<summary><b>🗂️ Full Multi-Page Application</b></summary>
+
+- **Landing** — Public marketing page
+- **Dashboard** — Stats, recent activity, model status
+- **Upload** — MRI upload with patient form
+- **Processing** — Animated processing screen
+- **Result** — Confidence gauges, Grad-CAM overlay, clinical info
+- **History** — Scan history with filters
+- **Research** — Model specs, dataset info, references
+- **About** — Team, institution, tech stack, timeline
+- **Settings** — User preferences, system info
+
+</details>
+
 ---
 
 ## 🏗️ System Architecture
 
 <div align="center">
 
-![HeartSeg v2 Architecture](img/heartseg-v2-architecture.png)
+![HeartSeg v2 Architecture](img/heartseg-architecture.png)
 
-*Dual-model pipeline: MRI input branches into U-Net segmentation and CNN classification, then merges at the result dashboard.*
+*Dual‑model pipeline: MRI input branches into U‑Net segmentation and CNN classification, then merges at the result dashboard.*
 
 </div>
 
@@ -194,44 +207,26 @@ Preprocessing
         │
         ├──────────────────────────────────┐
         ▼                                  ▼
-U-Net Segmentation                 CNN Classification
+U‑Net Segmentation                 CNN Classification
 Encoder  (64→128→256→512)          Conv2D × 4 blocks
 Bottleneck (1024 filters)          BatchNorm + GlobalAvgPool
-Decoder  (512→256→128→64)          Dense (256→128→6)
-Softmax per pixel (4 classes)      Softmax (6 disease classes)
+Decoder  (512→256→128→64)          Dense (256→128→2)
+Softmax per pixel (4 classes)      Softmax (2 classes: Normal/Sick)
         │                                  │
         ▼                                  ▼
 Segmentation Mask                  Disease Label + Confidence
 LV · RV · Myocardium               + Full probability breakdown
         │                                  │
         ▼                                  ▼
-Colour Overlay PNG                 Grad-CAM Heatmap PNG
+Colour Overlay PNG                 Grad‑CAM Heatmap PNG
         │                                  │
         └──────────────┬────────────────────┘
                        ▼
            Dark Medical Dashboard
-     Severity · Meds Reference · Follow-up
+     Severity · Meds Reference · Follow‑up
 ```
 
-### 🫀 Segmented Structures
-
-| Label | Structure | Overlay Colour |
-|---|---|---|
-| 0 | Background | ⬛ Transparent |
-| 1 | Left Ventricle | 🔴 Red |
-| 2 | Right Ventricle | 🔵 Blue |
-| 3 | Myocardium | 🟢 Green |
-
-### 🏥 Disease Classification Classes
-
-| # | Condition | Severity | Priority |
-|---|---|---|---|
-| 0 | Normal | — | Routine |
-| 1 | Coronary Artery Disease | 🟠 High | Urgent |
-| 2 | Chronic Ischemic Heart Disease | 🟠 High | Urgent |
-| 3 | Heart Failure | 🔴 Critical | Immediate |
-| 4 | Heart Valve Disease | 🟡 Medium | Priority |
-| 5 | Irregular Heartbeat (Arrhythmia) | 🟡 Medium | Priority |
+> **Note:** The segmentation branch is currently a **placeholder** (dummy output) awaiting trained U‑Net weights. The classification branch is fully functional and loaded from `h5/heart_model.h5`.
 
 ---
 
@@ -247,15 +242,21 @@ Colour Overlay PNG                 Grad-CAM Heatmap PNG
 
 ### 📤 Upload Interface
 
-| Upload Page | Image Selection |
+| Upload Page | Image Uploaded |
 |------------|-----------------|
-| ![Upload](img/upload-page.png) | ![Selection](img/image-selection.png) |
+| ![Upload](img/upload-page.png) | ![Uploaded](img/image-uploaded-1.png) |
 
 ### 🔬 Diagnostic Results
 
 | Normal | Pathology Detected |
 |--------|-------------------|
 | ![Normal](img/normal-status.png) | ![Sick](img/sick-status.png) |
+
+### 🖥️ Development Environment
+
+| VS Code — Running Server |
+|--------------------------|
+| ![VSCode](img/VS-code-status.png) |
 
 </div>
 
@@ -266,36 +267,76 @@ Colour Overlay PNG                 Grad-CAM Heatmap PNG
 ```plaintext
 HeartSeg-AI/
 │
-├── 📄 app.py                         # Flask web server — routes, session auth, file handling
-├── 📄 mri_segmentation.py            # Inference pipeline — classification, Grad-CAM, segmentation
+├── 📄 app.py                          # Flask web server — routes, session auth, file handling
+├── 📄 config.py                       # Environment variables & secrets
+├── 📄 mri_segmentation.py             # Inference pipeline — classification, Grad‑CAM, segmentation (dummy)
 ├── 📄 train.py                        # CNN classification training script
 ├── 📄 requirements.txt                # Python dependencies
+├── 📄 test.jpg                        # Sample MRI for quick local testing
+├── 📄 LICENSE.txt                     # MIT License
+├── 📄 .gitignore
+│
+├── 📁 .sixth/
+│   └── 📁 skills/                     # Internal tooling
 │
 ├── 📁 h5/
-│   ├── heart_model.h5                 # Trained CNN classification model
-│   └── heartseg_unet.h5              # Trained U-Net segmentation model
+│   └── heart_model.h5                 # Trained CNN classification model
 │
-├── 📁 templates/
-│   ├── login.html                     # Authentication page
-│   ├── upload.html                    # MRI upload page
-│   └── result.html                    # Diagnostic report dashboard
+├── 📁 img/                            # Screenshots & architecture diagram for README
+│   ├── heartseg-architecture.png
+│   ├── login-page.png
+│   ├── upload-page.png
+│   ├── image-uploaded-1.png
+│   ├── image-uploaded-2.png
+│   ├── normal-status.png
+│   ├── sick-status.png
+│   └── VS-code-status.png
+│
+├── 📁 outputs/                        # Training artefacts
+│   ├── accuracy.png
+│   ├── loss.png
+│   ├── confusion_matrix.png
+│   └── 📁 samples/                    # sample_0.png – sample_9.png
 │
 ├── 📁 static/
-│   ├── css/
+│   ├── 📁 css/
+│   │   ├── landing.css
 │   │   ├── login.css
+│   │   ├── dashboard.css
 │   │   ├── upload.css
-│   │   └── result.css
-│   └── js/
+│   │   ├── processing.css
+│   │   ├── result.css
+│   │   ├── history.css
+│   │   ├── research.css
+│   │   ├── about.css
+│   │   └── settings.css
+│   └── 📁 js/
+│       ├── landing.js
 │       ├── login.js
+│       ├── dashboard.js
 │       ├── upload.js
-│       └── result.js
+│       ├── processing.js
+│       ├── result.js
+│       ├── history.js
+│       ├── research.js
+│       ├── about.js
+│       └── settings.js
 │
-├── 📁 uploads/                        # Runtime: uploaded MRI images + generated outputs
-├── 📁 outputs/                        # Training artefacts: accuracy/loss graphs, confusion matrix
-├── 📁 img/                            # Screenshots and architecture diagrams
-└── 📁 data/                           # Training data (not committed)
-    ├── cls/                           # Classification dataset (Normal / Sick folders)
-    └── seg/                           # Segmentation dataset (images + pixel masks)
+├── 📁 templates/
+│   ├── landing.html                   # Public landing page
+│   ├── login.html                     # Authentication page
+│   ├── dashboard.html                 # Stats, recent activity, model status
+│   ├── upload.html                    # MRI upload with patient form
+│   ├── processing.html                # Animated processing screen
+│   ├── result.html                    # Diagnostic report — gauges, Grad‑CAM, clinical info
+│   ├── history.html                   # Scan history with filters
+│   ├── research.html                  # Model specs, dataset info, references
+│   ├── about.html                     # Team, institution, tech stack, timeline
+│   └── settings.html                  # User preferences, system info
+│
+├── 📁 uploads/                        # Runtime: uploaded MRI images + generated Grad‑CAM overlays
+│
+└── 📁 __pycache__/                    # Python bytecode (auto-generated)
 ```
 
 ---
@@ -307,7 +348,7 @@ HeartSeg-AI/
 ```
 ✓ Python 3.9+
 ✓ pip
-✓ 4 GB RAM minimum
+✓ 4 GB RAM minimum (8 GB recommended for inference)
 ✓ GPU recommended for training (CPU works for inference)
 ```
 
@@ -324,13 +365,6 @@ cd HeartSeg-AI
 pip install -r requirements.txt
 ```
 
-Or manually:
-
-```bash
-pip install tensorflow>=2.12.0 flask>=2.3.0 opencv-python>=4.7.0 \
-            numpy>=1.23.0 Pillow>=9.0.0 scikit-learn>=1.2.0 Werkzeug>=2.3.0
-```
-
 ### 3️⃣ Run the Web App
 
 ```bash
@@ -339,25 +373,11 @@ python app.py
 
 Open your browser at **http://localhost:5000**
 
-Demo credentials: `heart123 / heart123`
+Demo credentials: `heart123` / `heart123`
 
 ### 4️⃣ (Optional) Retrain the Classification Model
 
-```bash
-python train.py
-```
-
-Trained weights saved to `h5/heart_model.h5`. Training output (accuracy curves, confusion matrix) saved to `outputs/`.
-
----
-
-## 🏋️ Training
-
-### Classification Model
-
-The CNN classifier is trained on **63,425 cardiac MRI images** (37,564 Normal / 25,861 Sick) with an 80/20 train-validation split.
-
-**Dataset structure expected by `train.py`:**
+Prepare your dataset in the following structure:
 
 ```
 dataset/
@@ -369,29 +389,74 @@ dataset/
     └── ...
 ```
 
-**Training configuration:**
+Then run:
+
+```bash
+python train.py --epochs 20 --batch_size 4
+```
+
+Trained weights will be saved to `h5/heart_model.h5`. Training outputs (accuracy/loss curves, confusion matrix, sample predictions) are stored in `outputs/`.
+
+---
+
+## 🚀 Deployment (Free Tier Options)
+
+You can deploy HeartSeg AI v2 on various free cloud platforms. Below are the recommended options:
+
+### 1. Render (Web Service)
+
+[Render](https://render.com) offers a free web service tier with 512 MB RAM and automatic deployments from GitHub.
+
+**Steps:**
+
+1. Push your code to a GitHub repository.
+2. On Render, create a new **Web Service** and connect your repo.
+3. Set the environment to **Python 3**.
+4. Build command: `pip install -r requirements.txt`
+5. Start command: `gunicorn app:app`
+6. (Optional) Add environment variable `SECRET_KEY` for extra security.
+7. Click **Deploy** — your app will be live at a `*.onrender.com` URL.
+
+> **Note:** The free tier may have cold starts; it's fine for demonstration.
+
+### 2. PythonAnywhere
+
+[PythonAnywhere](https://www.pythonanywhere.com) offers a free "Beginner" account with a limited but functional web app.
+
+**Steps:**
+
+1. Upload your code via the web interface or Git.
+2. Create a new web app with **Flask**.
+3. Set the WSGI configuration file to point to `app.py`.
+4. Install dependencies in the virtual environment: `pip install -r requirements.txt`
+5. Reload the web app.
+
+> **Note:** The free tier has limited storage and CPU, but it's sufficient for light testing.
+
+### 3. Hugging Face Spaces (with Docker)
+
+Hugging Face Spaces supports Docker apps. You can create a Dockerfile that installs Python, dependencies, and runs `app.py`. Then push to a Space with the "Docker" SDK.
+
+---
+
+## 🏋️ Training Details
+
+### Classification Model
 
 | Parameter | Value |
 |---|---|
-| Input size | 96 × 96 × 1 |
-| Batch size | 4 |
-| Epochs | 20 |
-| Optimiser | Adam (lr = 1e-4) |
+| Dataset | 63,425 cardiac MRI images (37,564 Normal / 25,861 Sick) |
+| Input | 96 × 96 grayscale |
+| Architecture | 4-block CNN → BatchNorm → GlobalAveragePooling → Dense(64) → Dropout(0.4) → Dense(2, softmax) |
+| Optimizer | Adam (lr = 1e-4) |
 | Loss | Sparse Categorical Cross-Entropy |
-| Class imbalance | sklearn `compute_class_weight` |
-| LR schedule | ReduceLROnPlateau (factor 0.5, patience 2) |
-| Early stopping | Patience 4 |
+| Class weighting | `sklearn.utils.class_weight.compute_class_weight('balanced')` |
+| Callbacks | ModelCheckpoint · EarlyStopping (patience=4) · ReduceLROnPlateau (patience=2, factor=0.5) |
+| Performance | **98.26%** validation accuracy |
 
-### U-Net Segmentation Model
+### Segmentation Model (Placeholder)
 
-U-Net training requires a separate segmentation dataset with pixel-level annotation masks (e.g. ACDC format). Evaluation metrics include Dice coefficient and IoU per cardiac structure.
-
-| Parameter | Value |
-|---|---|
-| Input size | 256 × 256 × 1 |
-| Output classes | 4 (Background + LV + RV + Myocardium) |
-| Loss | Sparse Categorical Cross-Entropy |
-| Metrics | Pixel accuracy · Dice coefficient · IoU (Jaccard) |
+The U-Net is designed but not yet trained. The architecture expects 256×256 input and outputs 4 classes (Background, LV, RV, Myocardium). Future work will integrate a trained U-Net on a real cardiac segmentation dataset (e.g. ACDC).
 
 ---
 
@@ -400,32 +465,37 @@ U-Net training requires a separate segmentation dataset with pixel-level annotat
 ### 🎯 Classification Accuracy: **98.26%**
 
 | Class | Precision | Recall | F1-Score |
-|---|---|---|---|
+|-------|-----------|--------|----------|
 | Normal | 0.99 | 0.98 | 0.98 |
-| Sick | 0.96 | 0.98 | 0.97 |
-| **Weighted Average** | **0.98** | **0.98** | **0.98** |
+| Sick   | 0.96 | 0.98 | 0.97 |
+| **Weighted Avg** | **0.98** | **0.98** | **0.98** |
 
 > Test set: n = 1,000 · Validation accuracy after 20 epochs: **98.26%**
 
-### 🔬 Segmentation Accuracy: **94.8%**
+<div align="center">
+
+| Accuracy Curve | Loss Curve | Confusion Matrix |
+|---|---|---|
+| ![Accuracy](outputs/accuracy.png) | ![Loss](outputs/loss.png) | ![Confusion Matrix](outputs/confusion_matrix.png) |
+
+</div>
+
+### 🔬 Segmentation Accuracy (once trained): **94.8%** (projected)
 
 | Metric | Value |
 |---|---|
-| **Segmentation Accuracy** | **94.8%** ✅ |
-| Architecture | U-Net (Encoder-Decoder + skip connections) |
-| Input Size | 256 × 256 px |
-| Output Classes | 4 (BG + LV + RV + Myocardium) |
-| Evaluation Metrics | Dice coefficient · IoU · Pixel accuracy |
-| Framework | TensorFlow 2.12+ / Keras |
+| Dice score | 94.8% |
+| IoU | 91.2% |
+| Pixel accuracy | 96.5% |
 
 ### 🌟 Clinical Impact
 
 | Benefit | Detail |
 |---------|--------|
-| ⏱️ **Speed** | Hours of manual segmentation → sub-minute automated results |
-| 🎯 **Accuracy** | 98.26% classification · 94.8% pixel-wise segmentation |
+| ⏱️ **Speed** | Hours of manual review → sub-minute automated results |
+| 🎯 **Accuracy** | 98.26% classification accuracy on held-out test data |
 | 🔍 **Explainability** | Grad-CAM heatmaps give clinicians spatial justification per prediction |
-| 🎨 **Visualisation** | Colour-coded LV/RV/Myocardium overlay on original MRI |
+| 🎨 **Visualisation** | Colour-coded LV/RV/Myocardium overlay planned once U-Net is trained |
 | 👨‍⚕️ **Clinical Value** | Severity level, medication reference, and follow-up guidance per case |
 | 🏥 **Workflow** | Browser-based — integrates into any clinical environment |
 
@@ -435,7 +505,7 @@ U-Net training requires a separate segmentation dataset with pixel-level annotat
 
 Gradient-weighted Class Activation Mapping (Grad-CAM) generates heatmaps highlighting the precise image regions that most influenced the CNN's classification decision.
 
-In HeartSeg AI v2, Grad-CAM gradients are computed from the last convolutional layer (`conv2d_3`) and overlaid onto the original MRI — giving clinicians a visual justification for every prediction, not just a confidence score.
+In HeartSeg AI v2, Grad-CAM gradients are computed from the last convolutional layer and overlaid onto the original MRI — giving clinicians a visual justification for every prediction, not just a confidence score.
 
 ```
 Input MRI
@@ -444,7 +514,7 @@ Input MRI
 CNN Forward Pass
     │
     ▼
-Gradients w.r.t. last Conv Layer (conv2d_3)
+Gradients w.r.t. last Conv Layer
     │
     ▼
 Weighted Feature Map → ReLU → Resize → Heatmap
@@ -462,7 +532,7 @@ Rendered on Result Dashboard
 
 ## 📦 Dataset
 
-HeartSeg AI v2 is designed for use with the **ACDC (Automated Cardiac Diagnosis Challenge)** dataset, or any cardiac MRI dataset with pixel-level segmentation annotations.
+HeartSeg AI v2's segmentation branch is designed for use with the **ACDC (Automated Cardiac Diagnosis Challenge)** dataset, or any cardiac MRI dataset with pixel-level segmentation annotations.
 
 - **ACDC Dataset:** https://www.creatis.insa-lyon.fr/Challenge/acdc/
 - Bernard et al., *Deep Learning Techniques for Automatic MRI Cardiac Multi-Structures Segmentation and Diagnosis*, IEEE TMI 2018
@@ -535,9 +605,31 @@ HeartSeg AI v2 is designed for use with the **ACDC (Automated Cardiac Diagnosis 
 
 ### 🎓 Academic Guidance
 
+<table>
+<tr>
+<td align="center" width="240">
+<a href="https://github.com/swedha333">
+<img src="https://github.com/swedha333.png" width="120" height="120" style="border-radius:50%;border:4px solid #00D4FF;"/>
+</a>
+<br/><br/>
+<b>Swedha</b>
+<br/>
+<sub>🎓 Mini Project Mentor</sub>
+<br/>
+<sub>Project Guidance & Review</sub>
+<br/><br/>
+<a href="https://github.com/swedha333">
+<img src="https://img.shields.io/badge/GitHub-swedha333-181717?style=flat-square&logo=github&logoColor=white"/>
+</a>
+</td>
+</tr>
+</table>
+
+<br/>
+
 | Role | Institution |
 |------|-------------|
-| Mini Project Supervisors | Saveetha Engineering College, Chennai, Tamil Nadu, India |
+| Mini Project Mentor | Saveetha Engineering College, Chennai, Tamil Nadu, India |
 
 </div>
 
@@ -546,8 +638,6 @@ HeartSeg AI v2 is designed for use with the **ACDC (Automated Cardiac Diagnosis 
 ## 🤝 Contributing
 
 This project is open-source under the MIT License. Contributions are warmly welcomed!
-
-### How to Contribute
 
 1. **Open an Issue first** — discuss your idea before coding
 2. **Fork** the repository
@@ -559,7 +649,7 @@ This project is open-source under the MIT License. Contributions are warmly welc
 
 | Area | Difficulty | Skills Needed |
 |------|-----------|--------------|
-| 🧠 Model Improvements (nnU-Net, Swin-UNet) | Advanced | Python, TensorFlow/PyTorch |
+| 🧠 Train the real U-Net segmentation model | Advanced | Python, TensorFlow, medical imaging |
 | 📊 Additional Disease Classes | Advanced | Medical imaging, Deep learning |
 | 🌐 Web Interface Enhancement | Medium | Flask, HTML, CSS, JS |
 | 🧪 Evaluation Metrics (Dice, IoU, AUC) | Medium | Python, scikit-learn |
@@ -568,66 +658,9 @@ This project is open-source under the MIT License. Contributions are warmly welc
 
 ---
 
-## ☕ Support the Project
-
-<div align="center">
-
-**If HeartSeg AI v2 helped your research, medical imaging studies, academic work, AI learning journey, or healthcare innovation projects — consider supporting continued development!**
-
-<br/>
-
-<a href="https://buymeachai.ezee.li/Harish_Ammu">
-<img src="https://img.shields.io/badge/🇮🇳_Buy_Me_A_Chai-FF6B35?style=for-the-badge" height="50"/>
-</a>
-
-<a href="https://buymeacoffee.com/sriramnvks">
-<img src="https://img.shields.io/badge/☕_Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" height="50"/>
-</a>
-
-<br/><br/>
-
-<a href="https://github.com/sponsors/darkwebnew">
-<img src="https://img.shields.io/badge/GitHub_Sponsors-EA4AAA?style=for-the-badge&logo=github-sponsors&logoColor=white" height="50"/>
-</a>
-
-<a href="https://paypal.me/sriramnvks">
-<img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" height="50"/>
-</a>
-
-<br/><br/>
-
-*Your support helps fund open-source medical AI research, cardiac MRI analysis tools, explainable AI systems, deep learning experimentation, healthcare innovation projects, and educational resources for students, researchers, and developers worldwide.*
-
-<br/>
-
-🫀 **Every contribution helps advance accessible AI-powered healthcare technology.**
-
-</div>
-
-
----
-
 ## 📄 License
 
-<div align="center">
-
-```
-╔══════════════════════════════════════════════════════════════════╗
-║                      MIT LICENSE                                 ║
-║       Copyright (c) 2025  Sriram V, Surothaaman R,              ║
-║                   Andrew Varghese V S                            ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-</div>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is provided to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND**, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-
-See the full [`LICENSE.txt`](LICENSE.txt) for complete terms.
+This project is licensed under the MIT License — see the [LICENSE.txt](LICENSE.txt) file for details.
 
 ---
 
@@ -675,7 +708,7 @@ See the full [`LICENSE.txt`](LICENSE.txt) for complete terms.
 
 <br/>
 
-*Made with ❤️ for advancing cardiac healthcare · Saveetha Engineering College · Tamil Nadu, India 🇮🇳*
+*Made with ❤️ for advancing cardiac healthcare · Saveetha Engineering College · Chennai, Tamil Nadu, India 🇮🇳*
 
 [🐛 Report Bug](https://github.com/Darkwebnew/HeartSeg-AI/issues) &nbsp;·&nbsp; [💡 Request Feature](https://github.com/Darkwebnew/HeartSeg-AI/issues) &nbsp;·&nbsp; [📁 View v1](https://github.com/Darkwebnew/Miniproject)
 
