@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — Upload MRI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="heart-icon-sm">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 28S4 20 4 12a6 6 0 0112-1.17A6 6 0 0128 12c0 8-12 16-12 16z"
+                stroke="#ff4d6d" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="brand-text">HeartSeg<strong>AI</strong></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('dashboard') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+        Dashboard
+      </a>
+      <a href="{{ url_for('upload') }}" class="nav-item active">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+        Upload MRI
+      </a>
+      <a href="{{ url_for('history') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+        History
+      </a>
+      <a href="{{ url_for('landing') }}#research" class="nav-item" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.396 0 2.695.38 3.8 1.04A7.97 7.97 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+        Research
+      </a>
+      <a href="{{ url_for('landing') }}" class="nav-item" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        About
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="{{ url_for('logout') }}" class="nav-item logout">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+        Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+  </button>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <header class="top-bar">
+      <div class="page-title">
+        <h1>Upload MRI</h1>
+        <p class="page-sub">Enter patient details and upload cardiac MRI for analysis</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-badge">
+          <div class="user-avatar">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ session.username }}</span>
+            <span class="user-role">Researcher</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {% if error %}
+      <div class="alert-error">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        {{ error }}
+      </div>
+    {% endif %}
+
+    <form id="upload-form" method="POST" action="/predict" enctype="multipart/form-data">
+
+      <div class="upload-grid">
+
+        <!-- Patient Details -->
+        <div class="card patient-card">
+          <div class="card-header">
+            <h3>Patient Details</h3>
+            <span class="required-hint">* Required fields</span>
+          </div>
+          <div class="form-grid">
+            <div class="field-group">
+              <label for="patient_name">Patient Name <span class="req">*</span></label>
+              <input type="text" id="patient_name" name="patient_name" placeholder="Full name" required>
+            </div>
+            <div class="field-group">
+              <label for="patient_age">Age</label>
+              <input type="number" id="patient_age" name="patient_age" placeholder="Years" min="1" max="120">
+            </div>
+            <div class="field-group">
+              <label for="patient_gender">Gender</label>
+              <select id="patient_gender" name="patient_gender">
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="hospital_id">Hospital ID</label>
+              <input type="text" id="hospital_id" name="hospital_id" placeholder="e.g. H-2025-001">
+            </div>
+            <div class="field-group">
+              <label for="doctor_name">Referring Doctor</label>
+              <input type="text" id="doctor_name" name="doctor_name" placeholder="Dr. Name">
+            </div>
+            <div class="field-group">
+              <label for="mri_date">MRI Date</label>
+              <input type="date" id="mri_date" name="mri_date">
+            </div>
+            <div class="field-group">
+              <label for="heart_rate">Heart Rate (bpm)</label>
+              <input type="number" id="heart_rate" name="heart_rate" placeholder="e.g. 72" min="30" max="220">
+            </div>
+            <div class="field-group">
+              <label for="blood_pressure">Blood Pressure</label>
+              <input type="text" id="blood_pressure" name="blood_pressure" placeholder="e.g. 120/80">
+            </div>
+            <div class="field-group full-width">
+              <label for="symptoms">Symptoms</label>
+              <textarea id="symptoms" name="symptoms" rows="2" placeholder="Patient symptoms or complaints"></textarea>
+            </div>
+            <div class="field-group full-width">
+              <label for="notes">Clinical Notes</label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Additional observations"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- MRI Upload -->
+        <div class="card upload-card">
+          <div class="card-header">
+            <h3>MRI Scan</h3>
+            <span class="file-hint">PNG, JPG, JPEG · Max 10 MB</span>
+          </div>
+
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" name="file" id="file-input"
+                   accept=".png,.jpg,.jpeg" required hidden>
+
+            <div class="dz-idle" id="dz-idle">
+              <div class="dz-icon">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <rect x="8" y="16" width="48" height="36" rx="4"
+                        stroke="currentColor" stroke-width="2"/>
+                  <circle cx="22" cy="28" r="5" stroke="currentColor" stroke-width="2"/>
+                  <path d="M8 44l12-10 8 8 10-12 18 14"
+                        stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M32 8v16M26 14l6-6 6 6"
+                        stroke="#ff4d6d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <p class="dz-title">Drag & drop MRI image here</p>
+              <p class="dz-sub">or</p>
+              <button type="button" class="btn-browse" onclick="document.getElementById('file-input').click()">
+                Browse Files
+              </button>
+            </div>
+
+            <div class="dz-preview" id="dz-preview" hidden>
+              <img id="preview-img" src="" alt="MRI Preview">
+              <div class="preview-meta">
+                <p id="preview-name" class="meta-name"></p>
+                <p id="preview-size" class="meta-size"></p>
+                <button type="button" class="btn-clear" onclick="clearFile()">✕ Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="upload-info">
+            <div class="info-row">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+              <span>Analysis includes segmentation, classification, and Grad-CAM</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button type="submit" class="btn-analyse" id="btn-analyse" disabled>
+        <span class="btn-text">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.396 0 2.695.38 3.8 1.04A7.97 7.97 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+          </svg>
+          Run Diagnostic Analysis
+        </span>
+        <span class="btn-loader" hidden>
+          <span class="spinner"></span>Analysing…
+        </span>
+      </button>
+
+    </form>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+</body>
+</html>

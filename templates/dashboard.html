@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="heart-icon-sm">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 28S4 20 4 12a6 6 0 0112-1.17A6 6 0 0128 12c0 8-12 16-12 16z"
+                stroke="#ff4d6d" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="brand-text">HeartSeg<strong>AI</strong></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('dashboard') }}" class="nav-item active">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+        Dashboard
+      </a>
+      <a href="{{ url_for('upload') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+        Upload MRI
+      </a>
+      <a href="{{ url_for('history') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+        History
+      </a>
+      <a href="{{ url_for('landing') }}#research" class="nav-item" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.396 0 2.695.38 3.8 1.04A7.97 7.97 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+        Research
+      </a>
+      <a href="{{ url_for('landing') }}" class="nav-item" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        About
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="{{ url_for('logout') }}" class="nav-item logout">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+        Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+  </button>
+
+  <!-- Overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <!-- Top bar -->
+    <header class="top-bar">
+      <div class="page-title">
+        <h1>Dashboard</h1>
+        <p class="page-sub">Overview of cardiac MRI analyses</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-badge">
+          <div class="user-avatar">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ username }}</span>
+            <span class="user-role">Researcher</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats grid -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon total">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-value">{{ stats.total }}</span>
+          <span class="stat-label">Total Analyses</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon normal">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-value">{{ stats.normal }}</span>
+          <span class="stat-label">Normal</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon critical">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-value">{{ stats.critical }}</span>
+          <span class="stat-label">Critical</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon pending">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-value">{{ stats.pending }}</span>
+          <span class="stat-label">Pending</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content grid -->
+    <div class="content-grid">
+
+      <!-- Left column -->
+      <div class="content-left">
+
+        <!-- Recent analyses -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Analyses</h3>
+            <a href="{{ url_for('history') }}" class="card-link">View All →</a>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Patient</th>
+                  <th>Date</th>
+                  <th>Result</th>
+                  <th>Confidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in recent %}
+                <tr>
+                  <td><span class="id-badge">{{ row.id }}</span></td>
+                  <td>{{ row.patient }}</td>
+                  <td class="mono">{{ row.date }}</td>
+                  <td>
+                    <span class="result-badge severity-{{ row.severity }}">
+                      {{ row.result }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="confidence-cell">
+                      <div class="confidence-bar-sm">
+                        <div class="confidence-fill-sm" style="width: {{ row.confidence }}%"></div>
+                      </div>
+                      <span class="confidence-pct-sm">{{ row.confidence }}%</span>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Quick Actions</h3>
+          </div>
+          <div class="quick-actions">
+            <a href="{{ url_for('upload') }}" class="action-card">
+              <div class="action-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+              </div>
+              <div class="action-text">
+                <strong>Upload MRI</strong>
+                <span>Run new analysis</span>
+              </div>
+            </a>
+            <a href="{{ url_for('history') }}" class="action-card">
+              <div class="action-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+              </div>
+              <div class="action-text">
+                <strong>View History</strong>
+                <span>Past reports</span>
+              </div>
+            </a>
+            <a href="{{ url_for('landing') }}#research" class="action-card" target="_blank">
+              <div class="action-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.396 0 2.695.38 3.8 1.04A7.97 7.97 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+              </div>
+              <div class="action-text">
+                <strong>Research</strong>
+                <span>Model details</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right column -->
+      <div class="content-right">
+
+        <!-- Model status -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Model Status</h3>
+            <span class="version-badge">{{ model_status.version }}</span>
+          </div>
+          <div class="model-status-list">
+            <div class="status-row">
+              <div class="status-info">
+                <span class="status-name">Segmentation</span>
+                <span class="status-desc">U-Net · 256×256</span>
+              </div>
+              <span class="status-dot {% if model_status.seg_loaded %}active{% else %}inactive{% endif %}"></span>
+            </div>
+            <div class="status-row">
+              <div class="status-info">
+                <span class="status-name">Classification</span>
+                <span class="status-desc">CNN · 96×96 · 6 classes</span>
+              </div>
+              <span class="status-dot {% if model_status.cls_loaded %}active{% else %}inactive{% endif %}"></span>
+            </div>
+            <div class="status-row">
+              <div class="status-info">
+                <span class="status-name">Grad-CAM</span>
+                <span class="status-desc">Explainability engine</span>
+              </div>
+              <span class="status-dot {% if model_status.cls_loaded %}active{% else %}inactive{% endif %}"></span>
+            </div>
+          </div>
+          <div class="status-footer">
+            <span class="status-text">{{ model_status.last_check }}</span>
+          </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Activity</h3>
+          </div>
+          <div class="activity-list">
+            {% for act in activity %}
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-content">
+                <p class="activity-text">{{ act.text }}</p>
+                <span class="activity-time">{{ act.time }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — AI-Powered Cardiac MRI Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+
+  <!-- Animated network background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ECG Line -->
+  <div class="ecg-bar">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+      <polyline class="ecg-line" points="
+        0,30 100,30 120,30 130,5 140,55 150,10 160,50 170,30 280,30
+        300,30 320,30 330,5 340,55 350,10 360,50 370,30 480,30
+        500,30 520,30 530,5 540,55 550,10 560,50 570,30 680,30
+        700,30 720,30 730,5 740,55 750,10 760,50 770,30 880,30
+        900,30 920,30 930,5 940,55 950,10 960,50 970,30 1080,30
+        1100,30 1120,30 1130,5 1140,55 1150,10 1160,50 1170,30 1200,30
+      "/>
+    </svg>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="landing-nav">
+    <div class="nav-brand">
+      <div class="heart-icon-sm">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 28S4 20 4 12a6 6 0 0112-1.17A6 6 0 0128 12c0 8-12 16-12 16z"
+                stroke="#ff4d6d" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="nav-title">HeartSeg<strong>AI</strong></span>
+      <span class="nav-ver">v2</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#research">Research</a>
+      <a href="https://github.com/Darkwebnew/HeartSeg-AI" target="_blank">GitHub</a>
+      <a href="{{ url_for('login') }}" class="btn-nav-login">Launch Platform</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="status-dot"></span>
+        Models Ready — v2.0 Live
+      </div>
+      <h1 class="hero-title">
+        AI-Powered<br>
+        <span class="accent">Cardiac MRI</span><br>
+        Analysis
+      </h1>
+      <p class="hero-sub">
+        Dual-model U-Net segmentation + CNN classification delivering
+        <strong>98.26% diagnostic accuracy</strong> with Grad-CAM visual explainability.
+        Built for clinicians. Trusted by researchers.
+      </p>
+      <div class="hero-cta">
+        <a href="{{ url_for('login') }}" class="btn-primary">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+            <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+          </svg>
+          Launch Platform
+        </a>
+        <a href="https://github.com/Darkwebnew/HeartSeg-AI" target="_blank" class="btn-secondary">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num">98.26<small>%</small></span>
+      <span class="stat-desc">Classification Accuracy</span>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat-item">
+      <span class="stat-num">94.8<small>%</small></span>
+      <span class="stat-desc">Segmentation Dice</span>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat-item">
+      <span class="stat-num">63K<small>+</small></span>
+      <span class="stat-desc">Training Images</span>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat-item">
+      <span class="stat-num">6</span>
+      <span class="stat-desc">Disease Classes</span>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <p class="section-label">Capabilities</p>
+      <h2 class="section-title">Dual-Model Engine</h2>
+      <p class="section-sub">Segmentation and classification running in parallel for comprehensive cardiac analysis.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="--icon-color: #ff4d6d;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.42 4.58a5.4 5.4 0 00-7.65 0l-.77.78-.77-.78a5.4 5.4 0 00-7.65 0 5.4 5.4 0 000 7.65l.77.78 7.65 7.65 7.65-7.65.77-.78a5.4 5.4 0 000-7.65z"/>
+            <path d="M12 5.5v13"/>
+            <path d="M5.5 12h13"/>
+          </svg>
+        </div>
+        <h3>U-Net Segmentation</h3>
+        <p>Pixel-wise delineation of Left Ventricle, Right Ventricle, and Myocardium with 94.8% Dice accuracy.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="--icon-color: #3d82f7;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+            <line x1="6" y1="6" x2="6.01" y2="6"/>
+            <line x1="6" y1="18" x2="6.01" y2="18"/>
+          </svg>
+        </div>
+        <h3>CNN Classification</h3>
+        <p>6-class cardiac pathology identification including Normal, CAD, Heart Failure, and Arrhythmia.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="--icon-color: #ffa030;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>Grad-CAM Explainability</h3>
+        <p>Visual heatmaps highlighting the exact cardiac regions influencing every AI prediction.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="--icon-color: #50ff78;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <h3>Clinical Reports</h3>
+        <p>Severity levels, medication references, and follow-up guidance generated per diagnosis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section class="pipeline" id="pipeline">
+    <div class="section-header">
+      <p class="section-label">Workflow</p>
+      <h2 class="section-title">Inference Pipeline</h2>
+      <p class="section-sub">From MRI upload to diagnostic report in under 60 seconds.</p>
+    </div>
+
+    <div class="pipeline-flow">
+      <div class="pipe-step">
+        <div class="pipe-num">01</div>
+        <div class="pipe-content">
+          <h4>Preprocessing</h4>
+          <p>Grayscale conversion, resize to 256×256, and intensity normalisation.</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">02</div>
+        <div class="pipe-content">
+          <h4>U-Net Segmentation</h4>
+          <p>Pixel-wise mask generation for LV, RV, and Myocardium structures.</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">03</div>
+        <div class="pipe-content">
+          <h4>CNN Classification</h4>
+          <p>6-class disease prediction with confidence scoring.</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">04</div>
+        <div class="pipe-content">
+          <h4>Grad-CAM + Report</h4>
+          <p>Explainability heatmap and clinical dashboard output.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research -->
+  <section class="research" id="research">
+    <div class="section-header">
+      <p class="section-label">Research</p>
+      <h2 class="section-title">Model Architecture</h2>
+      <p class="section-sub">Built on established deep learning frameworks for biomedical imaging.</p>
+    </div>
+
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="research-top">
+          <span class="research-tag">Segmentation</span>
+          <h3>U-Net</h3>
+          <p class="research-metric">94.8% Dice</p>
+        </div>
+        <div class="research-body">
+          <p>Encoder-decoder with skip connections. Processes 256×256 cardiac MRI slices to produce pixel-wise masks for 4 classes: Background, LV, RV, and Myocardium.</p>
+          <div class="research-meta">
+            <span>Ronneberger et al. MICCAI 2015</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <div class="research-top">
+          <span class="research-tag">Classification</span>
+          <h3>CNN</h3>
+          <p class="research-metric">98.26% Accuracy</p>
+        </div>
+        <div class="research-body">
+          <p>4-block Conv2D architecture with BatchNorm, GlobalAveragePooling, and Dense layers. Trained on 63,425 images with class-weighted loss and early stopping.</p>
+          <div class="research-meta">
+            <span>TensorFlow 2.12 · Adam · Sparse CCE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <div class="research-top">
+          <span class="research-tag">Explainability</span>
+          <h3>Grad-CAM</h3>
+          <p class="research-metric">ICCV 2017</p>
+        </div>
+        <div class="research-body">
+          <p>Gradient-weighted Class Activation Maps from the last convolutional layer, overlaid onto the original MRI to show clinicians exactly what the model sees.</p>
+          <div class="research-meta">
+            <span>Selvaraju et al. ICCV 2017</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team / Institution -->
+  <section class="institution-section">
+    <div class="institution-content">
+      <h2>Academic Research Project</h2>
+      <p>
+        Developed at <strong>Saveetha Engineering College, Chennai</strong> as a final-year
+        mini project in AI-driven cardiac diagnostics. Published under the MIT License.
+      </p>
+      <div class="institution-badges">
+        <span class="ibadge">MIT License</span>
+        <span class="ibadge">Python 3.9+</span>
+        <span class="ibadge">TensorFlow 2.12</span>
+        <span class="ibadge">Flask 2.3</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 28S4 20 4 12a6 6 0 0112-1.17A6 6 0 0128 12c0 8-12 16-12 16z"
+                  stroke="#ff4d6d" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span>HeartSeg<strong>AI</strong> v2</span>
+      </div>
+      <div class="footer-links">
+        <a href="{{ url_for('login') }}">Platform</a>
+        <a href="https://github.com/Darkwebnew/HeartSeg-AI" target="_blank">GitHub</a>
+        <a href="https://github.com/Darkwebnew/Miniproject" target="_blank">v1 Legacy</a>
+      </div>
+      <div class="footer-copy">
+        © 2025 Sriram V, Surothaaman R, Andrew Varghese V S.<br>
+        Saveetha Engineering College · Chennai, Tamil Nadu, India.
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+</body>
+</html>

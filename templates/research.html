@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/research.css') }}">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="heart-icon-sm">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 28S4 20 4 12a6 6 0 0112-1.17A6 6 0 0128 12c0 8-12 16-12 16z"
+                stroke="#ff4d6d" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="brand-text">HeartSeg<strong>AI</strong></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('dashboard') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+        Dashboard
+      </a>
+      <a href="{{ url_for('upload') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+        Upload MRI
+      </a>
+      <a href="{{ url_for('history') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+        History
+      </a>
+      <a href="{{ url_for('research') }}" class="nav-item active">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.396 0 2.695.38 3.8 1.04A7.97 7.97 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+        Research
+      </a>
+      <a href="{{ url_for('landing') }}" class="nav-item" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        About
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="{{ url_for('logout') }}" class="nav-item logout">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+        Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+  </button>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <header class="top-bar">
+      <div class="page-title">
+        <h1>Research & Architecture</h1>
+        <p class="page-sub">Model specifications, training details, and references</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-badge">
+          <div class="user-avatar">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ session.username }}</span>
+            <span class="user-role">Researcher</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Model Cards -->
+    <div class="models-grid">
+
+      <!-- Segmentation -->
+      <div class="model-card">
+        <div class="model-header">
+          <div class="model-icon seg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.42 4.58a5.4 5.4 0 00-7.65 0l-.77.78-.77-.78a5.4 5.4 0 00-7.65 0 5.4 5.4 0 000 7.65l.77.78 7.65 7.65 7.65-7.65.77-.78a5.4 5.4 0 000-7.65z"/>
+              <path d="M12 5.5v13"/>
+              <path d="M5.5 12h13"/>
+            </svg>
+          </div>
+          <div class="model-title-group">
+            <h2>{{ model_specs.segmentation.name }}</h2>
+            <span class="model-tag">Segmentation</span>
+          </div>
+        </div>
+
+        <div class="model-body">
+          <p class="model-desc">{{ model_specs.segmentation.architecture }}</p>
+
+          <div class="spec-grid">
+            <div class="spec-item">
+              <span class="spec-label">Input</span>
+              <span class="spec-value">{{ model_specs.segmentation.input_size }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Output Classes</span>
+              <span class="spec-value">{{ model_specs.segmentation.output_classes }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Optimizer</span>
+              <span class="spec-value">{{ model_specs.segmentation.training.optimizer }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Loss</span>
+              <span class="spec-value">{{ model_specs.segmentation.training.loss }}</span>
+            </div>
+          </div>
+
+          <div class="class-list">
+            <p class="section-label">Output Classes</p>
+            <div class="class-tags">
+              {% for cls in model_specs.segmentation.classes %}
+              <span class="class-tag {% if loop.index == 2 %}lv{% elif loop.index == 3 %}rv{% elif loop.index == 4 %}myo{% endif %}">{{ cls }}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <span class="metric-num">{{ model_specs.segmentation.metrics.dice }}%</span>
+              <span class="metric-label">Dice Score</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-num">{{ model_specs.segmentation.metrics.iou }}%</span>
+              <span class="metric-label">IoU</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-num">{{ model_specs.segmentation.metrics.pixel_accuracy }}%</span>
+              <span class="metric-label">Pixel Accuracy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Classification -->
+      <div class="model-card">
+        <div class="model-header">
+          <div class="model-icon cls">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+              <line x1="6" y1="6" x2="6.01" y2="6"/>
+              <line x1="6" y1="18" x2="6.01" y2="18"/>
+            </svg>
+          </div>
+          <div class="model-title-group">
+            <h2>{{ model_specs.classification.name }}</h2>
+            <span class="model-tag">Classification</span>
+          </div>
+        </div>
+
+        <div class="model-body">
+          <p class="model-desc">{{ model_specs.classification.architecture }}</p>
+
+          <div class="spec-grid">
+            <div class="spec-item">
+              <span class="spec-label">Input</span>
+              <span class="spec-value">{{ model_specs.classification.input_size }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Classes</span>
+              <span class="spec-value">{{ model_specs.classification.output_classes }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Optimizer</span>
+              <span class="spec-value">{{ model_specs.classification.training.optimizer }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Dataset</span>
+              <span class="spec-value">{{ model_specs.classification.training.dataset }}</span>
+            </div>
+          </div>
+
+          <div class="layer-list">
+            <p class="section-label">Architecture Layers</p>
+            <ol>
+              {% for layer in model_specs.classification.layers %}
+              <li>{{ layer }}</li>
+              {% endfor %}
+            </ol>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <span class="metric-num">{{ model_specs.classification.metrics.accuracy }}%</span>
+              <span class="metric-label">Accuracy</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-num">{{ model_specs.classification.metrics.precision }}%</span>
+              <span class="metric-label">Precision</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-num">{{ model_specs.classification.metrics.recall }}%</span>
+              <span class="metric-label">Recall</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-num">{{ model_specs.classification.metrics.f1 }}%</span>
+              <span class="metric-label">F1-Score</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explainability -->
+      <div class="model-card wide">
+        <div class="model-header">
+          <div class="model-icon xai">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="model-title-group">
+            <h2>{{ model_specs.explainability.name }}</h2>
+            <span class="model-tag">Explainability</span>
+          </div>
+        </div>
+
+        <div class="model-body">
+          <p class="model-desc">{{ model_specs.explainability.method }}</p>
+
+          <div class="spec-grid three-col">
+            <div class="spec-item">
+              <span class="spec-label">Target Layer</span>
+              <span class="spec-value">{{ model_specs.explainability.target_layer }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Output</span>
+              <span class="spec-value">{{ model_specs.explainability.output }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Citation</span>
+              <span class="spec-value">{{ model_specs.explainability.citation }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Dataset Info -->
+    <div class="card dataset-card">
+      <div class="card-header">
+        <h3>Dataset</h3>
+      </div>
+      <div class="dataset-body">
+        <div class="dataset-stats">
+          <div class="dstat">
+            <span class="dstat-num">{{ dataset_info.total_images }}</span>
+            <span class="dstat-label">Total Images</span>
+          </div>
+          <div class="dst-div"></div>
+          <div class="dst-bar">
+            <div class="dst-fill" style="--normal-pct: {{ (dataset_info.normal / dataset_info.total_images * 100) | round }}%;"></div>
+          </div>
+          <div class="dstat">
+            <span class="dstat-num">{{ dataset_info.normal }}</span>
+            <span class="dstat-label">Normal</span>
+          </div>
+          <div class="dst-div"></div>
+          <div class="dstat">
+            <span class="dstat-num">{{ dataset_info.sick }}</span>
+            <span class="dstat-label">Sick</span>
+          </div>
+        </div>
+        <div class="dataset-meta">
+          <p><strong>Source:</strong> {{ dataset_info.source }}</p>
+          <p><strong>Citation:</strong> {{ dataset_info.citation }}</p>
+          <a href="{{ dataset_info.url }}" target="_blank" class="dataset-link">View Dataset →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- References -->
+    <div class="card refs-card">
+      <div class="card-header">
+        <h3>References</h3>
+      </div>
+      <div class="refs-list">
+        {% for ref in references %}
+        <div class="ref-item">
+          <div class="ref-num">{{ loop.index }}</div>
+          <div class="ref-content">
+            <p class="ref-title">{{ ref.title }}</p>
+            <p class="ref-authors">{{ ref.authors }} · {{ ref.venue }}</p>
+            <a href="{{ ref.link }}" target="_blank" class="ref-link">{{ ref.link }}</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/research.js') }}"></script>
+</body>
+</html>

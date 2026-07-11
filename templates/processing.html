@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — Analysing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/processing.css') }}">
+</head>
+<body>
+
+  <!-- Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Main -->
+  <main class="processing-main">
+
+    <div class="processing-card">
+
+      <!-- Heart animation -->
+      <div class="heart-wrap">
+        <div class="heart-pulse">
+          <svg viewBox="0 0 48 48" fill="none">
+            <path d="M24 42S6 30 6 18a9 9 0 0118-1.76A9 9 0 0142 18c0 12-18 24-18 24z"
+                  stroke="#ff4d6d" stroke-width="2.5" stroke-linejoin="round"/>
+            <path class="pulse-path" d="M10 24h5l3-7 4 14 3-10 3 6 3-3h6"
+                  stroke="#ff4d6d" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="pulse-rings">
+          <div class="ring r1"></div>
+          <div class="ring r2"></div>
+          <div class="ring r3"></div>
+        </div>
+      </div>
+
+      <h1 class="proc-title">Analysing MRI Scan</h1>
+      <p class="proc-sub">Running dual-model AI pipeline. Please wait.</p>
+
+      <!-- Steps -->
+      <div class="steps-list">
+
+        <div class="step" id="step-1">
+          <div class="step-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-top">
+              <span class="step-name">Preprocessing</span>
+              <span class="step-status" data-status="pending">Pending</span>
+            </div>
+            <div class="step-bar">
+              <div class="step-fill"></div>
+            </div>
+            <p class="step-desc">Grayscale conversion, resize to 256×256, normalisation</p>
+          </div>
+        </div>
+
+        <div class="step" id="step-2">
+          <div class="step-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-top">
+              <span class="step-name">U-Net Segmentation</span>
+              <span class="step-status" data-status="pending">Pending</span>
+            </div>
+            <div class="step-bar">
+              <div class="step-fill"></div>
+            </div>
+            <p class="step-desc">Pixel-wise delineation of LV, RV, and Myocardium</p>
+          </div>
+        </div>
+
+        <div class="step" id="step-3">
+          <div class="step-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-top">
+              <span class="step-name">CNN Classification</span>
+              <span class="step-status" data-status="pending">Pending</span>
+            </div>
+            <div class="step-bar">
+              <div class="step-fill"></div>
+            </div>
+            <p class="step-desc">6-class cardiac pathology identification</p>
+          </div>
+        </div>
+
+        <div class="step" id="step-4">
+          <div class="step-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-top">
+              <span class="step-name">Grad-CAM Explainability</span>
+              <span class="step-status" data-status="pending">Pending</span>
+            </div>
+            <div class="step-bar">
+              <div class="step-fill"></div>
+            </div>
+            <p class="step-desc">Visual heatmap of model decision regions</p>
+          </div>
+        </div>
+
+        <div class="step" id="step-5">
+          <div class="step-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-top">
+              <span class="step-name">Generating Report</span>
+              <span class="step-status" data-status="pending">Pending</span>
+            </div>
+            <div class="step-bar">
+              <div class="step-fill"></div>
+            </div>
+            <p class="step-desc">Compiling clinical dashboard with recommendations</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="proc-footer">
+        <p>Job ID: <span class="job-id">{{ job_id }}</span></p>
+        <a href="{{ url_for('upload') }}" class="btn-cancel" id="btn-cancel">Cancel</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const JOB_ID = "{{ job_id }}";
+  </script>
+  <script src="{{ url_for('static', filename='js/processing.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartSeg AI v2 — Diagnostic Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+</head>
+<body class="severity-{{ severity }}">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="heart-icon-sm">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 28S4 20 4 12a6 6 0 0112-1.17A6 6 0 0128 12c0 8-12 16-12 16z"
+                stroke="#ff4d6d" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="brand-text">HeartSeg<strong>AI</strong></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('dashboard') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+        Dashboard
+      </a>
+      <a href="{{ url_for('upload') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+        Upload MRI
+      </a>
+      <a href="{{ url_for('history') }}" class="nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+        History
+      </a>
+      <a href="{{ url_for('landing') }}#research" class="nav-item" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.396 0 2.695.38 3.8 1.04A7.97 7.97 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+        Research
+      </a>
+      <a href="{{ url_for('landing') }}" class="nav-item" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        About
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="{{ url_for('logout') }}" class="nav-item logout">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+        Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+  </button>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <!-- Top bar -->
+    <header class="top-bar">
+      <div class="page-title">
+        <h1>Diagnostic Report</h1>
+        <p class="page-sub">Cardiac MRI Analysis Results</p>
+      </div>
+      <div class="top-bar-right">
+        <a href="{{ url_for('upload') }}" class="btn-new">+ New Analysis</a>
+        <div class="user-badge">
+          <div class="user-avatar">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ session.username }}</span>
+            <span class="user-role">Researcher</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Patient Banner -->
+    {% if patient %}
+    <div class="patient-banner">
+      <div class="patient-info">
+        <div class="patient-avatar">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="patient-details">
+          <h3>{{ patient.name }}</h3>
+          <div class="patient-meta">
+            <span>Age: {{ patient.age }}</span>
+            <span>Gender: {{ patient.gender }}</span>
+            <span>ID: {{ patient.hospital_id }}</span>
+            <span>Doctor: {{ patient.doctor }}</span>
+            <span>MRI Date: {{ patient.mri_date }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="patient-vitals">
+        <div class="vital">
+          <span class="vital-label">Heart Rate</span>
+          <span class="vital-value">{{ patient.heart_rate }} <small>bpm</small></span>
+        </div>
+        <div class="vital">
+          <span class="vital-label">Blood Pressure</span>
+          <span class="vital-value">{{ patient.blood_pressure }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Result Grid -->
+    <div class="result-grid">
+
+      <!-- Left: Images -->
+      <section class="img-section">
+
+        <div class="img-card">
+          <div class="img-card-header">
+            <h3>Original MRI</h3>
+            <span class="img-badge">Input</span>
+          </div>
+          <div class="img-wrap">
+            <img src="{{ image_url }}" alt="Input MRI scan" loading="lazy">
+          </div>
+        </div>
+
+        {% if overlay_url %}
+        <div class="img-card">
+          <div class="img-card-header">
+            <h3>Segmentation Overlay</h3>
+            <div class="seg-legend">
+              <span class="leg lv"></span>LV
+              <span class="leg rv"></span>RV
+              <span class="leg myo"></span>Myo
+            </div>
+          </div>
+          <div class="img-wrap">
+            <img src="{{ overlay_url }}" alt="Segmentation overlay" loading="lazy">
+          </div>
+        </div>
+        {% endif %}
+
+        {% if gradcam_url %}
+        <div class="img-card">
+          <div class="img-card-header">
+            <h3>Grad-CAM Saliency</h3>
+            <span class="img-badge">Explainability</span>
+          </div>
+          <div class="img-wrap">
+            <img src="{{ gradcam_url }}" alt="Grad-CAM attention map" loading="lazy">
+          </div>
+        </div>
+        {% endif %}
+
+      </section>
+
+      <!-- Right: Data -->
+      <section class="data-section">
+
+        <!-- Risk Meter -->
+        <div class="result-card risk-card">
+          <div class="card-header">
+            <h3>Risk Assessment</h3>
+          </div>
+          <div class="risk-meter">
+            <div class="risk-gauge">
+              <div class="gauge-bg"></div>
+              <div class="gauge-fill" id="gauge-fill"></div>
+              <div class="gauge-needle" id="gauge-needle"></div>
+              <div class="gauge-center">
+                <span class="gauge-label" id="gauge-label">Risk</span>
+                <span class="gauge-value" id="gauge-value">
+                  {% if severity == 'none' %}Low
+                  {% elif severity == 'medium' %}Moderate
+                  {% elif severity == 'high' %}High
+                  {% elif severity == 'critical' %}Critical
+                  {% else %}Unknown
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+            <div class="risk-levels">
+              <span class="rl low {% if severity == 'none' %}active{% endif %}">Low</span>
+              <span class="rl medium {% if severity == 'medium' %}active{% endif %}">Moderate</span>
+              <span class="rl high {% if severity == 'high' %}active{% endif %}">High</span>
+              <span class="rl critical {% if severity == 'critical' %}active{% endif %}">Critical</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Classification -->
+        <div class="result-card primary-result">
+          <div class="card-header">
+            <h3>Classification Result</h3>
+            <span class="severity-badge severity-badge-{{ severity }}">
+              {% if severity == 'none' %}✓ Normal
+              {% elif severity == 'medium' %}⚠ Moderate
+              {% elif severity == 'high' %}⚡ High Risk
+              {% elif severity == 'critical' %}🚨 Critical
+              {% else %}— Unknown
+              {% endif %}
+            </span>
+          </div>
+
+          <div class="primary-diag">
+            <p class="diag-label">Predicted Condition</p>
+            <h2 class="diag-name">{{ predicted_class }}</h2>
+
+            <!-- Circular Confidence Gauge -->
+            <div class="confidence-gauge-wrap">
+              <div class="circular-gauge" id="circular-gauge">
+                <svg viewBox="0 0 120 120">
+                  <circle class="cg-bg" cx="60" cy="60" r="52"/>
+                  <circle class="cg-fill" id="cg-fill" cx="60" cy="60" r="52"/>
+                </svg>
+                <div class="cg-text">
+                  <span class="cg-pct" id="cg-pct">0%</span>
+                  <span class="cg-label">Confidence</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if all_probs %}
+          <div class="prob-breakdown">
+            <p class="breakdown-title">All class probabilities</p>
+            {% for label, prob in all_probs %}
+            <div class="prob-row">
+              <span class="prob-label {% if label == predicted_class %}active{% endif %}">
+                {{ label }}{% if label == predicted_class %} ✓{% endif %}
+              </span>
+              <div class="prob-bar-wrap">
+                <div class="prob-bar" style="width: {{ prob }}%"></div>
+              </div>
+              <span class="prob-pct">{{ prob }}%</span>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Structure Areas -->
+        {% if structure_areas %}
+        <div class="result-card">
+          <div class="card-header">
+            <h3>Structure Areas</h3>
+            <span class="card-sub">% of total image</span>
+          </div>
+          <div class="area-grid">
+            {% for name, pct in structure_areas.items() %}
+            <div class="area-item {% if 'Left' in name %}lv{% elif 'Right' in name %}rv{% else %}myo{% endif %}">
+              <span class="area-pct">{{ pct }}%</span>
+              <span class="area-name">{{ name }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Clinical Info -->
+        {% if disease_info %}
+        <div class="result-card clinical-card">
+          <div class="card-header">
+            <h3>Clinical Information</h3>
+          </div>
+
+          <p class="clinical-desc">{{ disease_info.get('description', '') }}</p>
+
+          {% if disease_info.get('recommendation') %}
+          <div class="clinical-block">
+            <p class="block-title">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+              Recommendation
+            </p>
+            <p>{{ disease_info['recommendation'] }}</p>
+          </div>
+          {% endif %}
+
+          {% if disease_info.get('medications') %}
+          <div class="clinical-block">
+            <p class="block-title">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a8 8 0 100 16A8 8 0 0010 2zm1 11a1 1 0 11-2 0 1 1 0 012 0zm-1-3a1 1 0 01-1-1V7a1 1 0 012 0v2a1 1 0 01-1 1z" clip-rule="evenodd"/></svg>
+              Medication Considerations
+            </p>
+            <div class="med-tags">
+              {% for med in disease_info['medications'] %}
+              <span class="med-tag">{{ med }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          {% if disease_info.get('follow_up') %}
+          <div class="clinical-block">
+            <p class="block-title">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+              Suggested Follow-up
+            </p>
+            <p class="follow-up-text">{{ disease_info['follow_up'] }}</p>
+          </div>
+          {% endif %}
+
+        </div>
+        {% endif %}
+
+        <!-- Action buttons -->
+        <div class="result-actions">
+          <button class="btn-action primary" onclick="window.print()">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd"/></svg>
+            Print Report
+          </button>
+          <button class="btn-action secondary">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/></svg>
+            Share
+          </button>
+          <a href="{{ url_for('upload') }}" class="btn-action secondary">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+            New Scan
+          </a>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer-card">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <p><strong>Medical Disclaimer:</strong> This AI system is a screening aid only. Medication information is for general reference. All clinical decisions must be made by a qualified, licensed cardiologist based on complete patient evaluation.</p>
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <script>
+    const CONFIDENCE_VALUE = {{ confidence }};
+    const SEVERITY_LEVEL = "{{ severity }}";
+  </script>
+  <script src="{{ url_for('static', filename='js/result.js') }}"></script>
+</body>
+</html>
